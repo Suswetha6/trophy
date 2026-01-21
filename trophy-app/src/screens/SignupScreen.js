@@ -21,7 +21,9 @@ export default function SignupScreen({ navigation }) {
     confirmPassword: '',
     branch: 'Computer Science',
     year: 1,
+    year: 1,
     skills: '',
+    admin_secret: '',
   });
   const [loading, setLoading] = useState(false);
   const { signup } = useContext(AuthContext);
@@ -152,6 +154,16 @@ export default function SignupScreen({ navigation }) {
             placeholder="Skills (e.g., Python, React, Java)"
             value={formData.skills}
             onChangeText={(value) => updateField('skills', value)}
+            editable={!loading}
+          />
+
+          <TextInput
+            style={styles.input}
+            placeholder="Admin Secret Key (Optional)"
+            value={formData.admin_secret}
+            onChangeText={(value) => updateField('admin_secret', value)}
+            autoCapitalize="none"
+            secureTextEntry
             editable={!loading}
           />
 

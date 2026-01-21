@@ -20,6 +20,7 @@ class Badge(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+    admin_secret: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: EmailStr

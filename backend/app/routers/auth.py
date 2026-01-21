@@ -4,6 +4,7 @@ from ..database import get_db
 from ..models.user import User
 from ..schemas.user import UserCreate, UserLogin, Token, User as UserSchema
 from ..utils.auth import get_password_hash, verify_password, create_access_token
+from ..config import settings
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -20,13 +21,20 @@ def signup(user: UserCreate, db: Session = Depends(get_db)):
     
     # Create user
     hashed_password = get_password_hash(user.password)
+    
+    # Check for admin secret
+    is_admin = False
+    if user.admin_secret == settings.ADMIN_SECRET_KEY:
+        is_admin = True
+        
     db_user = User(
         email=user.email,
         name=user.name,
         hashed_password=hashed_password,
         branch=user.branch,
         year=user.year,
-        skills=user.skills
+        skills=user.skills,
+        is_admin=is_admin
     )
     db.add(db_user)
     db.commit()
